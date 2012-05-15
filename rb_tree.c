@@ -158,6 +158,49 @@ rb_tree_dealloc (struct rb_tree *self, rb_tree_node_f node_cb) {
     }
 }
 
+int
+rb_tree_test (struct rb_tree *self, struct rb_node *root) {
+    int lh, rh;
+    
+    if ( root == NULL )
+        return 1;
+    else {
+        struct rb_node *ln = root->link[0];
+        struct rb_node *rn = root->link[1];
+        
+        /* Consecutive red links */
+        if (rb_node_is_red(root)) {
+            if (rb_node_is_red(ln) || rb_node_is_red(rn)) {
+                printf("Red violation");
+                return 0;
+            }
+        }
+        
+        lh = rb_tree_test(self, ln);
+        rh = rb_tree_test(self, rn);
+        
+        /* Invalid binary search tree */
+        if ( ( ln != NULL && self->cmp(self, ln, root) >= 0 )
+            || ( rn != NULL && self->cmp(self, rn, root) <= 0))
+        {
+            puts ( "Binary tree violation" );
+            return 0;
+        }
+        
+        /* Black height mismatch */
+        if ( lh != 0 && rh != 0 && lh != rh ) {
+            puts ( "Black violation" );
+            return 0;
+        }
+        
+        /* Only count black links */
+        if ( lh != 0 && rh != 0 )
+            return rb_node_is_red ( root ) ? lh : lh + 1;
+        else
+            return 0;
+    }
+}
+
 void *
 rb_tree_find(struct rb_tree *self, void *value) {
     void *result = NULL;

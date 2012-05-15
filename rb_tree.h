@@ -33,6 +33,7 @@
 #ifndef __RB_TREE_H__
 #define __RB_TREE_H__ 1
 
+#include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -87,6 +88,8 @@ size_t          rb_tree_size            (struct rb_tree *self);
 
 int             rb_tree_insert_node     (struct rb_tree *self, struct rb_node *node);
 int             rb_tree_remove_with_cb  (struct rb_tree *self, void *value, rb_tree_node_f node_cb);
+
+int             rb_tree_test            (struct rb_tree *self, struct rb_node *root);
 
 struct rb_iter *rb_iter_alloc           ();
 struct rb_iter *rb_iter_init            ();
