@@ -293,6 +293,7 @@ rb_tree_insert_node (struct rb_tree *self, struct rb_node *node) {
 
             // Update the root (it may be different)
             self->root = head.link[1];
+            result = 1;
         }
 
         // Make the root black for simplified logic
@@ -300,7 +301,7 @@ rb_tree_insert_node (struct rb_tree *self, struct rb_node *node) {
         ++self->size;
     }
     
-    return 1;
+    return result;
 }
 
 // Returns 1 if the value was removed, 0 otherwise. Optional node callback
